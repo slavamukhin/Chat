@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='style.css'>
+    <title>Chat</title>
+</head>
+<body class='container'>
+    <h1 class='main-title'>Добро пожаловать в чат!</h1>
+    <form  id='publish' class='form-inline'>
+        <div class='form-group col-9'>
+            <input type='text' name='message' autocomplete='off' class='form-control form-message'  placeholder='Enter message'>
+        </div>
+        <div class='form-group col-3'>
+            <button type='submit' class='btn btn-primary send-message'>Send message</button>
+        </div>
+    </form>
+    <ul id='messages' class="list-group list-group-flush list-message">
+        <!--<li class="list-group-item">Cras justo odio</li>-->
+    </ul>
+    <script>
+        publish.onsubmit = function() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/publish', true);
+            xhr.send(JSON.stringify({message: this.elements.message.value}));
+            this.elements.message.value = '';
+            return false;
+        };
+
+        subscribe();
+
+        function subscribe() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/subscribe', true);
+            xhr.onload = function() {
+                const li = document.createElement('li');
+                li.textContent = this.responseText;
+                li.className = 'list-group-item';
+                messages.appendChild(li);
+                subscribe();
+            };
+            xhr.onerror = xhr.onabort = function() {
+                setTimeout(subscribe, 500);
+            };
+            xhr.send('');
+        }
+    </script>
+</body>
+</html>

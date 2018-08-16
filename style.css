@@ -1,0 +1,14 @@
+.main-title {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-control.form-message,
+.send-message {
+    width: 100%;
+}
+
+.list-message {
+    margin-top: 30px;
+}
